@@ -20,7 +20,7 @@ function App() {
 
             <Suspense fallback={<Loader />}>
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/react-advanced-sandbox" element={<Home />} />
 
                     {/* /pages */}
                     <Route path="pages" element={<PagesLayout />}>

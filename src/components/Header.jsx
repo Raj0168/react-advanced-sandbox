@@ -64,7 +64,7 @@ const Header = () => {
                         fontWeight: "bold",
                     }}
                 >
-                    <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+                    <Link to="/react-advanced-sandbox" style={{ textDecoration: "none", color: "inherit" }}>
                         Helper
                     </Link>
                 </Typography>
@@ -134,7 +134,7 @@ const Header = () => {
                 </Menu>
 
                 <Button color="inherit">
-                    <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+                    <Link to="/react-advanced-sandbox" style={{ textDecoration: "none", color: "inherit" }}>
                         Waahoo
                     </Link>
                 </Button>
