@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Raj0168.github.io",
+  "homepage": "https://Raj0168.github.io/react-advanced-sandbox",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
