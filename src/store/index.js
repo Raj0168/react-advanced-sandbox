@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import apiReducer from "./slices/apiSlice";
 import themeReducer from "./slices/themeSlice";
 import snackbarReducer from "./slices/snackbarSlice";
+import historyReducer from "./slices/historySlice";
 import storage from "redux-persist/lib/storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import {
@@ -17,13 +18,14 @@ import persistStore from "redux-persist/es/persistStore";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["theme"],
+  whitelist: ["theme", "history"],
 };
 
 const rootReducer = combineReducers({
   api: apiReducer,
   theme: themeReducer,
   snackbar: snackbarReducer,
+  history: historyReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

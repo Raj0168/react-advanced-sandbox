@@ -70,6 +70,19 @@ const Header = () => {
                 </Typography>
 
                 <Button
+                    variant="h6"
+                    sx={{
+                        flexGrow: 1,
+                        textAlign: "left",
+                        fontWeight: "bold",
+                    }}
+                >
+                    <Link to="/search" style={{ textDecoration: "none", color: "inherit" }}>
+                        SEARCH
+                    </Link>
+                </Button>
+
+                <Button
                     color="inherit"
                     onMouseEnter={handleExploreEnter}
                     onMouseLeave={handleExploreLeave}
@@ -96,7 +109,7 @@ const Header = () => {
                 >
                     <MenuItem onClick={() => setExploreAnchorEl(null)}>
                         <Link
-                            to="/lazy"
+                            to="/pages/lazy"
                             style={{ textDecoration: "none", color: "inherit", width: "100%" }}
                         >
                             Lazy Component
@@ -104,10 +117,18 @@ const Header = () => {
                     </MenuItem>
                     <MenuItem onClick={() => setExploreAnchorEl(null)}>
                         <Link
-                            to="/fetch"
+                            to="/pages/fetch"
                             style={{ textDecoration: "none", color: "inherit", width: "100%" }}
                         >
                             Fetch Component
+                        </Link>
+                    </MenuItem>
+                    <MenuItem onClick={() => setExploreAnchorEl(null)}>
+                        <Link
+                            to="/rick-and-morty"
+                            style={{ textDecoration: "none", color: "inherit", width: "100%" }}
+                        >
+                            R & M
                         </Link>
                     </MenuItem>
                 </Menu>

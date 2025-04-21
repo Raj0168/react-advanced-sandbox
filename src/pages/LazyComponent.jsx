@@ -22,7 +22,6 @@ const LazyComponent = () => {
     const [language, setLanguage] = useState("en");
     const [loading, setLoading] = useState(false);
 
-
     const fetchFact = async () => {
         try {
             setLoading(true);

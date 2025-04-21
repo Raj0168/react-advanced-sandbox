@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Typography, Container, FormControl, InputLabel, MenuItem, TextField, Select, Button } from "@mui/material";
-import useFetch from "../hooks/fetchData";
+import useFetch from "../hooks/useFetch";
 import Loader from '../components/Loader';
 
 const availableEndpoints = [
