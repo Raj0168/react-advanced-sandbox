@@ -1,0 +1,50 @@
+<svg viewBox="0 0 700 450" xmlns="http://www.w3.org/2000/svg" width="700" height="450">
+
+  <!-- Background -->
+  <rect x="0" y="0" width="700" height="450" fill="#f9f9f9" />
+
+  <!-- Left side rooms -->
+  <rect id="room-201" x="30" y="30" width="120" height="100" stroke="#000" stroke-width="2" fill="#eee" />
+  <rect id="room-202" x="30" y="150" width="120" height="100" stroke="#000" stroke-width="2" fill="#eee" />
+
+  <!-- Center hall -->
+  <rect id="hall-2" x="180" y="90" width="200" height="120" stroke="#000" stroke-width="2" fill="#eee" />
+
+  <!-- Right side rooms -->
+  <rect id="room-203" x="400" y="30" width="120" height="100" stroke="#000" stroke-width="2" fill="#eee" />
+  <rect id="room-204" x="400" y="150" width="120" height="100" stroke="#000" stroke-width="2" fill="#eee" />
+
+  <!-- Server Room -->
+  <rect id="room-205" x="30" y="280" width="200" height="60" fill="#e0f7fa" stroke="#000" />
+
+  <!-- Break Room -->
+  <rect x="250" y="280" width="150" height="60" fill="#fff1c1" stroke="#000" />
+
+  <!-- Emergency Exit -->
+  <rect x="420" y="280" width="100" height="40" fill="#ffeaea" stroke="#f00" />
+  <text x="470" y="300" font-size="10" text-anchor="middle" alignment-baseline="middle" fill="#f00">Emergency Exit</text>
+
+  <!-- Doors -->
+  <line x1="150" y1="80" x2="180" y2="110" stroke="#333" stroke-width="4" />
+  <line x1="150" y1="200" x2="180" y2="170" stroke="#333" stroke-width="4" />
+  <line x1="380" y1="80" x2="400" y2="80" stroke="#333" stroke-width="4" />
+  <line x1="380" y1="200" x2="400" y2="200" stroke="#333" stroke-width="4" />
+
+  <!-- Stairs -->
+  <rect x="540" y="30" width="30" height="100" fill="#ccc" stroke="#000" />
+  <text x="555" y="80" font-size="10" text-anchor="middle" alignment-baseline="middle">Stairs</text>
+
+  <!-- Elevator -->
+  <rect x="580" y="30" width="30" height="100" fill="#d3e4ff" stroke="#000" />
+  <text x="595" y="80" font-size="10" text-anchor="middle" alignment-baseline="middle">Lift</text>
+
+  <!-- Washroom -->
+  <rect x="580" y="150" width="30" height="100" fill="#ffe4e4" stroke="#000" />
+  <text x="595" y="200" font-size="10" text-anchor="middle" alignment-baseline="middle">WC</text>
+
+  <!-- Pathways -->
+  <line x1="150" y1="130" x2="180" y2="150" stroke="#888" stroke-width="1" stroke-dasharray="4" />
+  <line x1="380" y1="130" x2="400" y2="150" stroke="#888" stroke-width="1" stroke-dasharray="4" />
+  <line x1="30" y1="250" x2="530" y2="250" stroke="#ccc" stroke-width="1" stroke-dasharray="6" />
+
+</svg>
