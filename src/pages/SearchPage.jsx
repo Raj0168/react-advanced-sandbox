@@ -11,6 +11,7 @@ import {
     ListItemText,
     Toolbar,
     AppBar,
+    Paper,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HistoryIcon from "@mui/icons-material/History";
@@ -24,7 +25,7 @@ import SearchBar from "../components/Search/SearchBar";
 import SearchResults from "../components/Search/SearchResults";
 import SearchResultsSkeleton from "../components/Search/SearchResultsSkeleton";
 
-const drawerWidth = 300;
+const drawerWidth = 200;
 
 const SearchPage = () => {
     const [query, setQuery] = useState("");
@@ -73,7 +74,7 @@ const SearchPage = () => {
         <>
             <AppBar position="static" color="default" elevation={0}>
                 <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h4" sx={{ flexGrow: 1, textAlign: "center", my: 4 }}>
                         DuckDuckGo powered Search Engine
                     </Typography>
                     <IconButton onClick={() => setDrawerOpen(true)}>
@@ -81,6 +82,24 @@ const SearchPage = () => {
                     </IconButton>
                 </Toolbar>
             </AppBar>
+
+            <Container>
+                <Paper sx={{ p: 3, mb: 3, backgroundColor: "#f5f5f5" }}>
+                    <Typography variant="body1" color="text.primary">
+                        Welcome to the DuckDuckGo-powered search engine! This app is built using modern React concepts and tools to offer you a seamless, privacy-focused search experience.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                        One of the core features of this app is its ability to maintain your search history. We use <strong>Redux</strong> for state management to store and handle the history of your searches. With <strong>Redux Persist</strong>, this history is saved even when you reload the page, providing you with a persistent and smooth user experience across sessions.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                        We also utilize the <strong>debounce</strong> technique to optimize search performance. By introducing a slight delay before sending the search request, we reduce unnecessary API calls while you type, leading to faster responses and a more efficient search experience.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                        The app also includes a <strong>state managed history drawer</strong> where you can access and manage your search history. You can quickly view past searches and even clear the history when needed.
+                    </Typography>
+                </Paper>
+            </Container>
+
 
             <Drawer
                 anchor="right"

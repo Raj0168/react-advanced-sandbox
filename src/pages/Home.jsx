@@ -282,16 +282,16 @@ export default function Home() {
 
             <Divider sx={{ my: 6 }} />
 
-            <motion.div {...fade} transition={{ duration: 0.7, delay: 1.2 }} viewport={{ once: true }}>
-                <ExpandableList
-                    title="Protected Components"
-                    items={hocPages.map((h) => ({ label: h.page, route: h.route }))}
-                />
-            </motion.div>
             <motion.div {...fade} transition={{ duration: 0.7, delay: 1.3 }} viewport={{ once: true }}>
                 <ExpandableList
                     title="Outlet Components"
                     items={outletPages.map((o) => ({ label: o.page, route: o.route }))}
+                />
+            </motion.div>
+            <motion.div {...fade} transition={{ duration: 0.7, delay: 1.2 }} viewport={{ once: true }}>
+                <ExpandableList
+                    title="Protected Components"
+                    items={hocPages.map((h) => ({ label: h.page, route: h.route }))}
                 />
             </motion.div>
 

@@ -33,7 +33,6 @@ export default function FloorMap({ selectedFloor }) {
         if (!res.ok) throw new Error(`SVG not found at ${url}`);
         const text = await res.text();
         setSvgRaw(text);
-        console.log("SVG fetched:", selectedFloor);
       } catch (err) {
         console.error("Error fetching SVG:", err);
       }
@@ -130,11 +129,10 @@ export default function FloorMap({ selectedFloor }) {
 
         <Box
           sx={{
-            position: "relative", // Make it a positioning context
+            position: "relative",
             border: "1px solid #ccc",
             borderRadius: 2,
             overflow: "hidden",
-            height: "500px", // optional: set a fixed height for better layout control
           }}
         >
           <TransformWrapper ref={transformWrapperRef}>
@@ -148,7 +146,6 @@ export default function FloorMap({ selectedFloor }) {
             </TransformComponent>
           </TransformWrapper>
 
-          {/* Floating Zoom Buttons */}
           <Box
             sx={{
               position: "absolute",

@@ -8,6 +8,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Paper,
 } from "@mui/material";
 import axios from "axios";
 import Loader from "../components/Loader";
@@ -52,12 +53,29 @@ const MeowPage = () => {
 
     return (
         <Container sx={{ py: 5, display: 'flex', justifyContent: 'center', flexDirection: "column", alignItems: 'center', }}>
-            <Typography variant="h5" gutterBottom>
-                {`This Page uses React Router's <Outlet /> to restrict any unauthorized access.`}<br />
-                {`No nesting of HOCs - `}
-                {`Route-based, declarative auth protection`}
-            </Typography>
-            <Box component="hr" sx={{ my: 2 }} />
+            <Paper sx={{ p: 3, mb: 3, backgroundColor: "#f5f5f5" }}>
+                <Typography textAlign="center" variant="h4" gutterBottom>
+                    Meow Facts Page
+                </Typography>
+
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
+                    This page utilizes route-based protection using <strong>React Router’s &lt;Outlet /&gt;</strong> feature, ensuring that only authenticated users can access it.
+                </Typography>
+
+                <Typography variant="body1" sx={{ mt: 2 }}>
+                    A random cat fact is fetched using <strong>Axios</strong> whenever the selected language changes. This demonstrates dynamic API calls based on state, and a clean separation of concerns using React hooks.
+                </Typography>
+
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                    <strong>Multilingual Support:</strong><br />
+                    Users can choose from a wide array of languages including Bengali, Korean, Urdu, and more. The fact will then be retrieved in the selected language (depending on API support).
+                </Typography>
+
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                    This page is an example of declarative, clean component structure without deeply nested HOCs—everything is controlled via routes and context where needed.
+                </Typography>
+
+            </Paper>
 
             {fact && (
                 loading ? (

@@ -8,6 +8,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Paper
 } from "@mui/material";
 import axios from "axios";
 import Loader from "../components/Loader";
@@ -45,9 +46,18 @@ const LazyComponent = () => {
 
     return (
         <Container sx={{ py: 5, display: 'flex', justifyContent: 'center', flexDirection: "column", alignItems: 'center', }}>
-            <Typography variant="h4" gutterBottom>
-                This is a lazily loaded page!!
-            </Typography>
+            <Paper sx={{ p: 3, mb: 3, backgroundColor: "#f5f5f5" }}>
+                <Typography variant="h4">Lazy Loaded Component</Typography>
+
+                <Typography marginY={2} variant="body1" >
+                    Welcome to the Lazy Loaded Component page! Here, we fetch a random useless fact, and the content is fetched lazily based on the language selected. This page demonstrates how you can load content only when it's required by the user.
+                </Typography>
+
+                <Typography variant="body1" color="text.primary">
+                    The concept of lazy loading is implemented in this component by fetching data only when the component is rendered and when a user interacts with the language dropdown. This ensures that unnecessary data is not fetched upfront, optimizing performance.
+                </Typography>
+            </Paper>
+
             <Box component="hr" sx={{ my: 2 }} />
 
             {fact && (

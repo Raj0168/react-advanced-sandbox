@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import usePaginationFetch from "../hooks/usePaginationFetch";
 import {
     Box,
@@ -9,12 +9,14 @@ import {
     Tab,
     Tabs,
     Typography,
+    Paper,
+    Stack,
+    Divider,
+    Tooltip,
 } from "@mui/material";
-import Loader from "../components/Loader";
 import CharacterCard from "../components/RaM/CharacterCard";
 import LocationCard from "../components/RaM/LocationCard";
 import DetailModal from "../components/RaM/DetailModal";
-
 import InfiniteGrid from "../components/RaM/InfiniteGrid";
 import SkeletonFallback from "../utils/SkeletonFallback";
 
@@ -44,20 +46,24 @@ export default function RickAndMorty() {
         setTab(newValue);
         setPage(1);
     };
+
     const handleToggleMode = () => {
         setIsInfiniteScroll((p) => !p);
         setPage(1);
     };
+
     const handleCardClick = (id) => {
         setSelectedItemId(id);
         setShowModal(true);
     };
+
     const handleModalClose = () => {
         setShowModal(false);
         setSelectedItemId(null);
     };
 
     const isItemLoaded = (index) => index < items.length;
+
     const loadMoreItems = () => {
         if (!loading && paginationInfo?.next) {
             setPage((p) => p + 1);
@@ -67,12 +73,65 @@ export default function RickAndMorty() {
 
     const totalCount = paginationInfo?.count || 0;
 
+    const memoizedItems = useMemo(() => items, [items]);
+
+    const onCardClickMemo = useCallback((id) => handleCardClick(id), []);
+
     return (
         <Container>
             <Box sx={{ mt: 3 }}>
-                <Typography variant="h4" gutterBottom fu>
+                <Typography variant="h4" gutterBottom align="center">
                     Rick and Morty Explorer
                 </Typography>
+
+                <Paper sx={{ p: 3, mb: 3, backgroundColor: "#f5f5f5" }}>
+                    <Typography variant="h6" gutterBottom>
+                        Advanced React Concepts
+                    </Typography>
+                    <Stack spacing={1}>
+                        <Typography>
+                            This page leverages several advanced React concepts:
+                        </Typography>
+                        <ul>
+                            <li>
+                                <strong>React.memo</strong>: Memoizes the `CharacterCard`
+                                and `LocationCard` components to avoid unnecessary re-renders.
+                            </li>
+                            <li>
+                                <strong>useMemo</strong>: Used to memoize the `items` array for
+                                performance optimization when the data is unchanged.
+                            </li>
+                            <li>
+                                <strong>useCallback</strong>: Memoizes the `onCardClickMemo`
+                                function to prevent unnecessary re-creations of the function
+                                during re-renders.
+                            </li>
+                            <li>
+                                <strong>React-Window</strong>: Efficiently renders large lists by
+                                rendering only the visible items in the grid, thus improving
+                                performance for large data sets.
+                            </li>
+                            <li>
+                                <strong>Skeleton Fallback</strong>: Displays a skeleton screen
+                                while the content is loading, ensuring smooth user experience.
+                            </li>
+                            <li>
+                                <strong>Infinite Scroll</strong>: Implemented using
+                                `react-window-infinite-loader` to fetch new data as the user
+                                scrolls, reducing the number of requests needed to load a large
+                                dataset.
+                            </li>
+                            <li>
+                                <strong>Rick and Morty API</strong>: We use the free{' '}
+                                <a href="https://rickandmortyapi.com/" target="_blank" rel="noopener noreferrer">
+                                    Rick and Morty API
+                                </a>{' '}
+                                because it provides a large dataset for testing these advanced
+                                React concepts in a realistic scenario.
+                            </li>
+                        </ul>
+                    </Stack>
+                </Paper>
 
                 <Tabs
                     value={tab}
@@ -89,6 +148,7 @@ export default function RickAndMorty() {
                     variant="outlined"
                     onClick={handleToggleMode}
                     sx={{ mb: 2 }}
+                    fullWidth
                 >
                     Switch to {isInfiniteScroll ? "Pagination" : "Infinite Scroll"}
                 </Button>
@@ -96,29 +156,28 @@ export default function RickAndMorty() {
                 {isInfiniteScroll ? (
                     <Box sx={{ mt: 3, width: "100%", height: "70vh" }}>
                         <InfiniteGrid
-                            items={items}
+                            items={memoizedItems}
                             totalCount={totalCount}
                             tab={tab}
-                            onCardClick={handleCardClick}
+                            onCardClick={onCardClickMemo}
                             loadMoreItems={loadMoreItems}
                             isItemLoaded={isItemLoaded}
                         />
                     </Box>
-
                 ) : (
                     <>
                         <Grid container spacing={2}>
-                            {items.map((item) => (
+                            {memoizedItems.map((item) => (
                                 <Grid item xs={12} sm={6} md={4} key={item.id}>
                                     {tab === "character" ? (
                                         <CharacterCard
                                             character={item}
-                                            onClick={() => handleCardClick(item.id)}
+                                            onClick={onCardClickMemo}
                                         />
                                     ) : (
                                         <LocationCard
                                             location={item}
-                                            onClick={() => handleCardClick(item.id)}
+                                            onClick={onCardClickMemo}
                                         />
                                     )}
                                 </Grid>

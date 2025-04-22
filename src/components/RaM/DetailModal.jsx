@@ -1,6 +1,5 @@
 import { PureComponent } from "react";
 import axiosInstance from "../../utils/axiosInstance";
-import Loader from "../Loader";
 import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import ResidentList from "./ResidentList";
 import SkeletonFallback from "../../utils/SkeletonFallback";
