@@ -13,20 +13,27 @@ import axios from "axios";
 import Loader from "../components/Loader";
 
 const availableLanguages = [
-    { value: 'en', label: 'English' },
-    { value: 'de', label: 'German' },
+    { value: 'eng', label: 'English' },
+    { value: 'ger', label: 'German' },
+    { value: 'ben', label: 'Bengali' },
+    { value: 'esp', label: 'Spanish' },
+    { value: 'rus', label: 'Russian' },
+    { value: 'zho', label: 'Chinese' },
+    { value: 'ita', label: 'Italian' },
+    { value: 'urd', label: 'Urdu' },
+    { value: 'kor', label: 'Korean' },
 ];
 
-const LazyComponent = () => {
+const MeowPage = () => {
     const [fact, setFact] = useState("");
-    const [language, setLanguage] = useState("en");
+    const [language, setLanguage] = useState("eng");
     const [loading, setLoading] = useState(false);
 
     const fetchFact = async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`https://uselessfacts.jsph.pl/api/v2/facts/random?language=${language}`);
-            setFact(res?.data?.text);
+            const res = await axios.get(`https://meowfacts.herokuapp.com/?lang=${language}`);
+            setFact(res?.data?.data[0]);
         } catch (err) {
             console.error("Failed to fetch api: ", err);
         } finally {
@@ -45,8 +52,10 @@ const LazyComponent = () => {
 
     return (
         <Container sx={{ py: 5, display: 'flex', justifyContent: 'center', flexDirection: "column", alignItems: 'center', }}>
-            <Typography variant="h4" gutterBottom>
-                This is a lazily loaded page!!
+            <Typography variant="h5" gutterBottom>
+                {`This Page uses React Router's <Outlet /> to restrict any unauthorized access.`}<br />
+                {`No nesting of HOCs - `}
+                {`Route-based, declarative auth protection`}
             </Typography>
             <Box component="hr" sx={{ my: 2 }} />
 
@@ -55,7 +64,7 @@ const LazyComponent = () => {
                     <Loader />
                 ) : (
                     <>
-                        <Typography sx={{ my: 2 }} variant="h4">Here is a random useless fact for you</Typography>
+                        <Typography sx={{ my: 2 }} variant="h4">Here is a random Cat fact for you</Typography>
                         <Typography variant="h5" sx={{ my: 2 }}>{fact}</Typography>
                         <div style={{ display: "flex", alignItems: 'center', gap: "50px", }}>
                             <Button variant="contained" onClick={() => fetchFact()}>Randomize</Button>
@@ -81,4 +90,4 @@ const LazyComponent = () => {
     );
 };
 
-export default LazyComponent;
+export default MeowPage;

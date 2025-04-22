@@ -3,6 +3,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import Loader from "../Loader";
 import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import ResidentList from "./ResidentList";
+import SkeletonFallback from "../../utils/SkeletonFallback";
 
 class DetailModal extends PureComponent {
     state = {
@@ -12,7 +13,6 @@ class DetailModal extends PureComponent {
     };
 
     componentDidUpdate(prevProps) {
-        console.log("componentDidUpdate called");
         const { open, url } = this.props;
 
         if (open && !prevProps.open) {
@@ -51,7 +51,7 @@ class DetailModal extends PureComponent {
         const { type } = this.props;
 
 
-        if (loading) return <Loader />;
+        if (loading) return <SkeletonFallback />;
         if (error) return <Typography color="error">Error: {error.message}</Typography>;
         if (!details) return <Typography>No details available</Typography>;
 

@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <PersistGate loading={<Loader />} persistor={persistor}>
       <SnackBarProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/react-advanced-sandbox">
           <GlobalSnackbar />
           <App />
         </BrowserRouter>

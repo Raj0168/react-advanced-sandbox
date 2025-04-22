@@ -15,25 +15,41 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import persistStore from "redux-persist/es/persistStore";
+import { encryptTransform } from "redux-persist-transform-encrypt";
 
-const persistConfig = {
-  key: "root",
+const secret_key = "5l4lYf51r1ZzD6OaZb7pDwNvHfD3D3TSKDjFblUwA8aI="; // env in prod
+
+const userPersistConfig = {
+  key: "user",
   storage,
-  whitelist: ["theme", "history", "user"],
+  transforms: [
+    encryptTransform({
+      secretKey: secret_key,
+      onError: (error) => console.error("Encryption error:", error),
+    }),
+  ],
+};
+
+const themePersistConfig = {
+  key: "theme",
+  storage,
+};
+
+const historyPersistConfig = {
+  key: "searchHistory",
+  storage,
 };
 
 const rootReducer = combineReducers({
-  user: userReducer,
+  user: persistReducer(userPersistConfig, userReducer),
+  theme: persistReducer(themePersistConfig, themeReducer),
+  searchHistory: persistReducer(historyPersistConfig, historyReducer),
   api: apiReducer,
-  theme: themeReducer,
   snackbar: snackbarReducer,
-  history: historyReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

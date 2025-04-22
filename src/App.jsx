@@ -1,28 +1,38 @@
-// src/App.jsx
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
-import Loader from './components/Loader';
-import Header from './components/Header';
-import ErrorBoundary from './utils/ErrorBoundary';
+
+const Header = lazy(() => import('./components/Header'));
+const ErrorBoundary = lazy(() => import('./utils/ErrorBoundary'));
+const ProtectedLayout = lazy(() => import('./utils/ProtectedLayout'));
 
 const Home = lazy(() => import('./pages/Home'));
 const LazyComponent = lazy(() => import('./pages/LazyComponent'));
 const FetchPage = lazy(() => import('./pages/FetchPage'));
-const SearchPage = lazy(() => import('./pages/SearchPage'));
 const RickAndMorty = lazy(() => import('./pages/RickAndMorty'));
+const MeowPage = lazy(() => import('./pages/MeowPage'));
+const FloorMapPage = lazy(() => import('./pages/FloorMapPage'));
+const SearchPage = lazy(() => import('./pages/SearchPage'));
+const UserDetails = lazy(() => import('./pages/UserDetails'));
+const RequiresLogin = lazy(() => import('./pages/RequiresLogin'));
+
+import withAuthProtection from "./hoc/withAuthProtection";
+import SkeletonFallback from './utils/SkeletonFallback';
+import ProtectedPages from './pages/ProtectedPages';
+
+const ProtectedUserDetails = withAuthProtection(UserDetails);
 
 const PagesLayout = () => <Outlet />;
 
 function App() {
     return (
-        <div style={{ width: '100%', overflowX: 'hidden' }}>
-            <Header />
+        <Suspense fallback={<SkeletonFallback />}>
+            <div style={{ width: '100%', overflowX: 'hidden' }}>
+                <Header />
 
-            <Suspense fallback={<Loader />}>
                 <Routes>
-                    <Route path="/react-advanced-sandbox" element={<Home />} />
+                    <Route path="/" element={<Home />} />
 
-                    {/* /pages */}
+                    {/* Nested Pages */}
                     <Route path="pages" element={<PagesLayout />}>
                         <Route
                             path="fetch"
@@ -42,7 +52,18 @@ function App() {
                         />
                     </Route>
 
+                    {/* Protected Routes */}
+                    <Route element={<ProtectedLayout />}>
+                        <Route path="/meow-page" element={<MeowPage />} />
+                        <Route path="/floor-map" element={<FloorMapPage />} />
+                    </Route>
+
+                    {/* Protected HOC Routes */}
                     <Route path="/search" element={<SearchPage />} />
+                    <Route path="/user-details" element={<ProtectedUserDetails />} />
+                    <Route path="/requires-login" element={<RequiresLogin />} />
+
+                    <Route path="/protected" element={<ProtectedPages />} />
 
                     <Route
                         path="/rick-and-morty"
@@ -53,8 +74,8 @@ function App() {
                         }
                     />
                 </Routes>
-            </Suspense>
-        </div>
+            </div>
+        </Suspense>
     );
 }
 

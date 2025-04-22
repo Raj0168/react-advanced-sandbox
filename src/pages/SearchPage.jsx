@@ -1,56 +1,48 @@
-import React, { useEffect, useState } from "react";
-import useDebounce from "../hooks/useDebounce";
-import { useDispatch } from "react-redux";
-import { addToSearchHistory } from "../store/slices/historySlice";
+import React, { useState } from "react";
+import {
+    Box,
+    Container,
+    Typography,
+    IconButton,
+    Drawer,
+    Divider,
+    List,
+    ListItem,
+    ListItemText,
+    Toolbar,
+    AppBar,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import HistoryIcon from "@mui/icons-material/History";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    addToSearchHistory,
+    clearSearchHistory,
+} from "../store/slices/historySlice";
 import fetchJsonp from "fetch-jsonp";
-import { Box, Container, Typography } from "@mui/material";
 import SearchBar from "../components/Search/SearchBar";
-import SuggestionsDropdown from "../components/Search/SuggestionsDropdown";
 import SearchResults from "../components/Search/SearchResults";
-import Loader from "../components/Loader";
+import SearchResultsSkeleton from "../components/Search/SearchResultsSkeleton";
+
+const drawerWidth = 300;
 
 const SearchPage = () => {
     const [query, setQuery] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
-    const debouncedQuery = useDebounce(query, 400);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        const fetchSuggestions = async () => {
-            if (!debouncedQuery) {
-                setSuggestions([]);
-                return;
-            }
-
-            try {
-                const response = await fetchJsonp(
-                    `https://duckduckgo.com/ac/?q=${debouncedQuery}`,
-                    {
-                        jsonpCallback: "callback",
-                        timeout: 5000,
-                    }
-                );
-                const data = await response.json();
-                const phrases = data.map((item) => item.phrase);
-                setSuggestions(phrases.slice(0, 8)); // Limit to 8 suggestions
-            } catch (error) {
-                console.error("Error fetching suggestions:", error);
-            }
-        };
-
-        fetchSuggestions();
-    }, [debouncedQuery]);
+    const history = useSelector((state) => state.searchHistory.history);
 
     const fetchSearchResults = async (searchText) => {
         setLoading(true);
         try {
-            const res = await fetchJsonp(`https://api.duckduckgo.com/?q=${searchText}&format=json&pretty=1`);
+            const res = await fetchJsonp(
+                `https://api.duckduckgo.com/?q=${searchText}&format=json&pretty=1`
+            );
             const data = await res.json();
-            const topics = data.RelatedTopics || [];
-            setResults(topics);
+            setResults(data.RelatedTopics || []);
         } catch (error) {
             console.error("Error fetching results:", error);
         } finally {
@@ -59,44 +51,123 @@ const SearchPage = () => {
     };
 
     const handleSearch = () => {
-        if (!query) return;
+        if (!query.trim()) return;
         dispatch(addToSearchHistory(query));
         fetchSearchResults(query);
-        setSuggestions([]);
     };
 
-    const handleInputChange = (event) => {
-        setQuery(event.target.value);
-    };
+    const handleInputChange = (e) => setQuery(e.target.value);
 
-    const handleSuggestionClick = (text) => {
+    const handleHistoryClick = (text) => {
         setQuery(text);
-        fetchSearchResults(text);
         dispatch(addToSearchHistory(text));
-        setSuggestions([]);
+        fetchSearchResults(text);
+        setDrawerOpen(false);
+    };
+
+    const handleClearHistory = () => {
+        dispatch(clearSearchHistory());
     };
 
     return (
-        <Container>
-            <Box sx={{ mt: 4 }}>
-                <Typography variant="h4" mb={2}>
-                    Search Engine
-                </Typography>
+        <>
+            <AppBar position="static" color="default" elevation={0}>
+                <Toolbar>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                        DuckDuckGo powered Search Engine
+                    </Typography>
+                    <IconButton onClick={() => setDrawerOpen(true)}>
+                        <HistoryIcon />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
 
+            <Drawer
+                anchor="right"
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                PaperProps={{
+                    sx: {
+                        width: drawerWidth,
+                        height: "calc(100% - 60px)",
+                        top: "60px",
+                        borderTopLeftRadius: 3,
+                        borderBottomLeftRadius: 3,
+                        p: 2,
+                    },
+                }}
+            >
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+                    <Typography variant="h6" fontWeight="medium">
+                        Search History
+                    </Typography>
+                    <IconButton onClick={handleClearHistory} size="small" color="error">
+                        <DeleteIcon fontSize="small" />
+                    </IconButton>
+                </Box>
+                <Divider sx={{ mb: 2 }} />
+                {history.length === 0 ? (
+                    <Typography variant="body2" color="text.secondary">
+                        No history yet.
+                    </Typography>
+                ) : (
+                    <List dense>
+                        {history.map((item, index) => (
+                            <ListItem
+                                button
+                                key={`${item}-${index}`}
+                                onClick={() => handleHistoryClick(item)}
+                                sx={{
+                                    borderRadius: 1,
+                                    px: 1.5,
+                                    py: 0.8,
+                                    mb: 0.5,
+                                    cursor: "pointer",
+                                    transition: "all 0.2s ease",
+                                    "&:hover": {
+                                        bgcolor: "action.hover",
+                                    },
+                                }}
+                            >
+                                <ListItemText
+                                    primary={item}
+                                    slotProps={{
+                                        primary: {
+                                            noWrap: true,
+                                            fontSize: 14,
+                                        },
+                                    }}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                )}
+            </Drawer>
+
+            <Container maxWidth="lg" sx={{ mt: 4 }}>
                 <SearchBar
                     query={query}
                     onInputChange={handleInputChange}
                     onSearch={handleSearch}
                 />
-
-                <SuggestionsDropdown
-                    suggestions={suggestions}
-                    onSuggestionClick={handleSuggestionClick}
-                />
-
-                {loading ? <Loader /> : <SearchResults results={results} />}
-            </Box>
-        </Container>
+                <Box sx={{ mt: 4 }}>
+                    {loading ? (
+                        <SearchResultsSkeleton />
+                    ) : results.length > 0 ? (
+                        <SearchResults results={results} />
+                    ) : (
+                        <Typography
+                            variant="h6"
+                            color="text.secondary"
+                            align="center"
+                            sx={{ mt: 6 }}
+                        >
+                            🔎 Start typing to search using DuckDuckGo!
+                        </Typography>
+                    )}
+                </Box>
+            </Container>
+        </>
     );
 };
 

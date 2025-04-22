@@ -16,6 +16,7 @@ import LocationCard from "../components/RaM/LocationCard";
 import DetailModal from "../components/RaM/DetailModal";
 
 import InfiniteGrid from "../components/RaM/InfiniteGrid";
+import SkeletonFallback from "../utils/SkeletonFallback";
 
 const BASE_URL = "https://rickandmortyapi.com/api/";
 
@@ -144,7 +145,7 @@ export default function RickAndMorty() {
                     />
                 )}
 
-                {loading && <Loader />}
+                {loading && <SkeletonFallback />}
                 {error && (
                     <Typography color="error" mt={2}>
                         {error.message || "Something went wrong"}

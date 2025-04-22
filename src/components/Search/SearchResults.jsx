@@ -1,75 +1,68 @@
 import React from "react";
-import { Box, Typography, Link, Card, CardContent, CardMedia, Divider } from "@mui/material";
+import {
+    Box,
+    Typography,
+    Link,
+    Card,
+    CardContent,
+    CardMedia,
+    Divider,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Skeleton,
+} from "@mui/material";
+import LaunchIcon from "@mui/icons-material/Launch";
+import SearchResultsSkeleton from "./SearchResultsSkeleton";
 
-const SearchResults = ({ results }) => {
-    if (!results.length) {
-        return <Typography sx={{ mt: 2 }}>No results found.</Typography>;
-    }
+const SearchResults = ({ results, loading }) => {
+    const relatedItems = [];
 
-    // Extract abstract data if present
-    const { AbstractText, Abstract, Image, AbstractURL } = results[0] || {};
+    results.forEach((result) => {
+        if (result.Text && result.FirstURL) {
+            relatedItems.push(result);
+        } else if (result.Topics) {
+            relatedItems.push(...result.Topics);
+        }
+    });
 
     return (
-        <Box sx={{ mt: 3 }}>
-            {/* Abstract Section */}
-            {AbstractText && (
-                <Card sx={{ mb: 4, display: "flex", flexDirection: { xs: "column", sm: "row" }, p: 2 }}>
-                    {Image && (
-                        <CardMedia
-                            component="img"
-                            sx={{ width: { xs: "100%", sm: 200 }, height: "auto", objectFit: "contain", borderRadius: 1 }}
-                            image={Image}
-                            alt="Abstract"
-                        />
-                    )}
-                    <CardContent>
+        <Box>
+            {loading ? (
+                <SearchResultsSkeleton />
+
+            ) : (
+                relatedItems.length > 0 && (
+                    <>
+                        <Divider sx={{ my: 2 }} />
                         <Typography variant="h6" gutterBottom>
-                            {Abstract}
+                            Related Results
                         </Typography>
-                        <Typography variant="body1" sx={{ mb: 1 }}>
-                            {AbstractText}
-                        </Typography>
-                        {AbstractURL && (
-                            <Link href={AbstractURL} target="_blank" rel="noopener noreferrer">
-                                Read more →
-                            </Link>
-                        )}
-                    </CardContent>
-                </Card>
+                        <List dense>
+                            {relatedItems.map((item, index) => (
+                                <ListItem
+                                    key={index}
+                                    component="a"
+                                    href={item.FirstURL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    sx={{
+                                        borderRadius: 1,
+                                        mb: 1,
+                                        "&:hover": { backgroundColor: "action.hover" },
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <LaunchIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.Text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </>
+                )
             )}
-
-            {/* Divider */}
-            {AbstractText && <Divider sx={{ mb: 3 }} />}
-
-            {/* Related Topics Section */}
-            <Typography variant="h6" gutterBottom>
-                Related Results
-            </Typography>
-
-            {results.map((result, index) => {
-                if (result.Text && result.FirstURL) {
-                    return (
-                        <Box key={index} sx={{ mb: 2 }}>
-                            <Typography variant="subtitle1">
-                                <Link href={result.FirstURL} target="_blank" rel="noopener noreferrer">
-                                    {result.Text}
-                                </Link>
-                            </Typography>
-                        </Box>
-                    );
-                } else if (result.Topics) {
-                    return result.Topics.map((sub, i) => (
-                        <Box key={`${index}-${i}`} sx={{ mb: 2 }}>
-                            <Typography variant="subtitle1">
-                                <Link href={sub.FirstURL} target="_blank" rel="noopener noreferrer">
-                                    {sub.Text}
-                                </Link>
-                            </Typography>
-                        </Box>
-                    ));
-                }
-                return null;
-            })}
         </Box>
     );
 };
