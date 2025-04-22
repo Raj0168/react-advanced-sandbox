@@ -1,1 +1,0 @@
-import{u as n,j as s,B as i,T as e}from"./index-hhAz2SZW.js";const l=()=>{const{username:r,profession:t}=n(a=>a.user);return s.jsxs(i,{mt:5,textAlign:"center",children:[s.jsx(e,{variant:"h4",children:"👤 User Details"}),s.jsxs(e,{variant:"h6",mt:2,children:["Username: ",r]}),s.jsxs(e,{variant:"h6",children:["Profession: ",t]})]})};export{l as default};

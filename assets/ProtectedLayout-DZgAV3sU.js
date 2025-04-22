@@ -1,0 +1,1 @@
+import{u as s,j as u,N as o,O as t}from"./index-Bb-4CbBO.js";const i=()=>s(e=>{var r;return(r=e==null?void 0:e.user)==null?void 0:r.username})?u.jsx(t,{}):u.jsx(o,{to:"/requires-login",replace:!0});export{i as default};
